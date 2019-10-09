@@ -1,1 +1,1 @@
-web: gunicorn myproject.wsgi
+web: gunicorn Attendance_Management_Project.wsgi
