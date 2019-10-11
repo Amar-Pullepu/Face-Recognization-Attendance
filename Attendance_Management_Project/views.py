@@ -20,7 +20,7 @@ auth = fire.auth()
 
 def login(request):
     
-    return render(request, 'Login.html',{})
+    return render(request, 'login.html',{})
 
 def home(request):
     if(request.method == 'POST'):
