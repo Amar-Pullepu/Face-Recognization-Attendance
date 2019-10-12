@@ -8,7 +8,7 @@
   
   <form action='home' method='post' class="form-horizontal">
    {% csrf_token %}
-   <span>Account Login</span>
+   <span><h3>Account Login</h3></span>
     <div class="form-group">
         <div class="col-sm-2"></div>
       <label class="col-sm-2 control-label" align="right">Email: </label>
@@ -23,15 +23,25 @@
         <input class="form-control" id="password" type="password" name="password" placeholder="Password" required>
       </div>
     </div>
-      
+    
     <button type="submit" class="btn">
      Sign in
     </button>
+      
+    <div><h4 id = "logOut"></h4></div>
   </form>
     
     
     
 </div>
+
+<script>
+    var error = {{error}};
+</script>
+
+{% load static %}
+
+<script type="text/javascript" src="{% static 'javaScripts/loginScript.js' %}"></script>
 {% endblock %}
 
 {% block footer %}<strong>©Amar Pullepu</strong>{% endblock %}

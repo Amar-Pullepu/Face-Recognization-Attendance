@@ -16,18 +16,25 @@ firebaseConfig = {
  
 fire = pyrebase.initialize_app(firebaseConfig)
 
-auth = fire.auth()
+authe = fire.auth()
 
 def login(request):
     
-    return render(request, 'login.html',{})
+    return render(request, 'login.html',{'error':'0'})
 
 def home(request):
     if(request.method == 'POST'):
         email = request.POST.get("email")
         password = request.POST.get("password")
-        
-        user = auth.sign_in_with_email_and_password(email, password)
-        
+        try:
+            user = authe.sign_in_with_email_and_password(email, password)
+        except:
+            return redirect('wrongCredentials')
         return render(request, 'Home.html', {'i':email})
-    return redirect('login')
+    return redirect('login', permanent=True)
+
+def wrongCredentials(request):
+    return render(request, 'login.html',{'error':'1'})
+
+def logOut(request):
+    return render(request, 'login.html',{'error':'2'})
