@@ -1,7 +1,9 @@
 {% extends "Base.html" %}
 
 {% block title %}Facial Attendance{% endblock %}
-
+{% block logout%}
+<li><a href="logOut"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+{% endblock %}
 {% block body %}
 {% csrf_token %}
 <div class="row content">

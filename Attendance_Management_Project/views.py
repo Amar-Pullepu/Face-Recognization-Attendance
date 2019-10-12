@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.contrib import auth
+
 import pyrebase
 
 firebaseConfig = {
@@ -28,8 +30,11 @@ def home(request):
         password = request.POST.get("password")
         try:
             user = authe.sign_in_with_email_and_password(email, password)
+            print(user['idToken'])
         except:
             return redirect('wrongCredentials')
+        sessionId = user['idToken']
+        request.session['uid'] = str(sessionId)
         return render(request, 'Home.html', {'i':email})
     return redirect('login', permanent=True)
 
@@ -37,4 +42,5 @@ def wrongCredentials(request):
     return render(request, 'login.html',{'error':'1'})
 
 def logOut(request):
+    auth.logout(request)
     return render(request, 'login.html',{'error':'2'})
