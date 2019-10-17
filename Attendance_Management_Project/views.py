@@ -2,6 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
+import json
+
+import numpy as np
+from PIL import Image
+import base64
+import re
+from io import StringIO, BytesIO
+import cv2
+import face_recognition
 
 import pyrebase
 
@@ -44,3 +53,35 @@ def wrongCredentials(request):
 def logOut(request):
     auth.logout(request)
     return render(request, 'login.html',{'error':'2'})
+
+def ajaxCanvas(request):
+    try:
+        image_b64 = request.POST.get('imageBase64')
+        image_data = re.sub('^data:image/.+;base64,', '', image_b64)        
+        #print("Debug 1")
+        image_PIL = Image.open(BytesIO(base64.b64decode(image_data)))
+        #print("Debug 2")
+        image_np = np.array(image_PIL)
+        rgb_small_frame = small_frame[:, :, ::-1]
+        
+        name = ""
+        
+        # Find all the faces and face encodings in the current frame of video
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+
+        for face_encoding in face_encodings:
+            matches = face_recognition.compare_faces([Known_Face_Encoding], face_encoding)
+            
+            face_distances = face_recognition.face_distance([Known_Face_Encoding], face_encoding)
+            
+            if (matches[0] and  face_distances[0] < 0.3):
+                name = "True"
+        #print(type(image_np))
+        #print('Image received: {}' + str(image_np.shape))
+        return HttpResponse(json.dumps({'name': name}), content_type="application/json")
+    except:
+        print("Error")
+    return HttpResponse("Success!")
+               
