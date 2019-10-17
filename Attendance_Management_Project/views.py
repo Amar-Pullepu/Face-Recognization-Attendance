@@ -64,7 +64,7 @@ def ajaxCanvas(request):
         image_np = np.array(image_PIL)
         rgb_small_frame = small_frame[:, :, ::-1]
         
-        nam = ""
+        name = ""
         
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
@@ -77,10 +77,10 @@ def ajaxCanvas(request):
             face_distances = face_recognition.face_distance([Known_Face_Encoding], face_encoding)
             
             if (matches[0] and  face_distances[0] < 0.3):
-                nam = "True"
+                name = "True"
         #print(type(image_np))
         #print('Image received: {}' + str(image_np.shape))
-        return HttpResponse(json.dumps({'name': nam}), content_type="application/json")
+        return HttpResponse(json.dumps({'name': name}), content_type="application/json")
     except:
         print("Error")
     return HttpResponse("Success!")
