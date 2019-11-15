@@ -1,0 +1,35 @@
+{% extends "Base.html" %}
+
+{% block title %}Face Details{% endblock %}
+{% block logout%}
+<li><a href="logOut"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+{% endblock %}
+{% block body %}
+<div class="row content">
+ <h1>Attendance Management System</h1>
+  
+  <form action='home' method='post' class="form-horizontal">
+   {% csrf_token %}
+   <span><h3>Face Details</h3></span>
+    <div class="form-group">
+        <div class="col-sm-2"></div>
+      <label class="col-sm-2 control-label" align="right">faceDetails: </label>
+      <div class="col-sm-4">
+        <input class="form-control" id="faceDetails" type="text" name="faceDetails" placeholder="faceDetails" required>
+      </div>
+    </div>
+    
+    <button type="submit" class="btn">
+     Next
+    </button>
+      
+  </form>
+    
+    
+    
+</div>
+
+
+{% endblock %}
+
+{% block footer %}<strong>©Amar Pullepu</strong>{% endblock %}

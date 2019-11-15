@@ -4,11 +4,12 @@
 
 {% block body %}
 <div class="row content">
- <h1>Facial Attendance System</h1>
+ <h1>Attendance Management System</h1>
   
   <form action='home' method='post' class="form-horizontal">
    {% csrf_token %}
    <span><h3>Account Login</h3></span>
+   <span><h5 id="logOut"></h5></span>
     <div class="form-group">
         <div class="col-sm-2"></div>
       <label class="col-sm-2 control-label" align="right">Email: </label>
@@ -41,7 +42,7 @@
 
 {% load static %}
 
-<script type="text/javascript" src="{% static 'javaScripts/loginScript.js' %}"></script>
+<script type="text/javascript" src="{% static 'javaScripts/errorScript.js' %}"></script>
 {% endblock %}
 
 {% block footer %}<strong>©Amar Pullepu</strong>{% endblock %}

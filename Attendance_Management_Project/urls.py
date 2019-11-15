@@ -24,5 +24,15 @@ urlpatterns = [
     path('wrongCredentials', views.wrongCredentials, name="wrongCredentials"),
     path('logOut', views.logOut, name="logOut"),
     path('ajaxCanvas', views.ajaxCanvas, name="ajaxCanvas"),
-    
+    path('ajaxStatusCheck', views.ajaxStatusCheck, name="ajaxStatusCheck"),
+    path('ajaxAttendanceUpdate', views.ajaxAttendanceUpdate, name="ajaxAttendanceUpdate"),
+    path('studentRegister', views.studentRegister, name="studentRegister"),
+    path('postRegistration', views.postRegistration, name="postRegistration"),
+    path('dupHome', views.dupHome, name="dupHome"),
+    path('attendanceClosed', views.attendanceClosed, name="attendanceClosed"),
+    path('attendanceRecorded', views.attendanceRecorded, name="attendanceRecorded"),
+    path('facultyAttendance', views.facultyAttendance, name="facultyAttendance"),
+    path('markAttendance', views.markAttendance, name="markAttendance"),
+    path('attendanceMarked', views.attendanceMarked, name="attendanceMarked")
+
 ]

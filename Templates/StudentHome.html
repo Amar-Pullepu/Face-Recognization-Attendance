@@ -1,0 +1,32 @@
+{% extends "Base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block logout%}
+<li><a href="logOut"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+{% endblock %}
+{% block body %}
+<div class="row content">
+ {% csrf_token %}
+ <h1>Facial Attendance System</h1>
+  <h3>Hello {{i}}</h3>
+  {% if Closed %}
+    <p>Attendance Closed </p>
+  {% elif Recorded %}
+    <p>Attendance Recorded </p>
+  {% endif %}
+    
+    <p id="statusReport"></p>
+  <p>Not the whole project </p>
+    <div class="container">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <button onclick="window.location.href = 'markAttendance';" class="btn btn-primary" id="markAttendanceBtn">FaceRecog Attendance</button>
+      </div>
+      <div class="col-sm-4">
+        <button onclick="window.location.href = 'showAttendance';" class="btn btn-primary">View Attendance</button>
+      </div>
+    </div> 
+</div>
+{% load static %}
+<script type="text/javascript" src="{% static 'javaScripts/StatusCheck.js' %}"></script>
+{% endblock %}

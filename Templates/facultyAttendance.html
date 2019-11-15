@@ -1,0 +1,53 @@
+{% extends "Base.html" %}
+
+{% block title %}Faculty Attendance{% endblock %}
+{% block logout%}
+<li><a href="logOut"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+{% endblock %}
+{% block body %}
+<div class="row content">
+ <h1>Attendance Management System</h1>
+  
+  <form action='attendanceMarked' method='post' class="form-horizontal">
+   {% csrf_token %}
+   <span><h3>List of Students</h3></span>
+  <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Registration Number</th>
+      <th scope="col">Attendance</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for student in data %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+        {% for item in student %}
+         <td>{{item}}</td>
+        {% endfor %}
+      <td>
+       <select class="form-control" id="sel{{ forloop.counter0 }}" name="sel{{ forloop.counter0 }}">
+        <option>Absent</option>
+        <option>Present</option>
+       </select>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+  <button type="submit" class="btn">
+     Submit
+  </button>
+  </form>
+    
+    
+    
+</div>
+{% load static %}
+<script type="text/javascript" src="{% static 'javaScripts/attendanceUpdate.js' %}"></script>
+
+{% endblock %}
+{% block footer %}<strong>©Amar Pullepu</strong>{% endblock %}

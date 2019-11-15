@@ -1,0 +1,23 @@
+{% extends "Base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block logout%}
+<li><a href="logOut"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+{% endblock %}
+{% block body %}
+<div class="row content">
+ {% csrf_token %}
+ <h1>Face Attendance System</h1>
+  <h3>Hello {{i}}</h3>
+  <p>Not the whole project </p>
+        <video id="video" hidden></video>
+  <div class = "booth">
+    <canvas id="canvasInput" width="800" height="600"></canvas>
+  </div>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'CSS/booths.css' %}">
+  <script type="text/javascript" src="{% static 'javaScripts/video.js' %}"></script>
+  <script type="text/javascript" src="{% static 'javaScripts/canvasDisplay.js' %}"></script>
+  <script type="text/javascript" src="{% static 'javaScripts/videoProcessing.js' %}"></script>
+</div>
+{% endblock %}
