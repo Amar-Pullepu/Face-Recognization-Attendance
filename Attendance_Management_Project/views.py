@@ -11,7 +11,7 @@ import re
 from io import StringIO, BytesIO
 import face_recognition
 import datetime
-
+from . import utils
 import pyrebase
 
 firebaseConfig = {
@@ -137,39 +137,7 @@ def ajaxCanvas(request):
             Known_Face_Encoding = database.child("Users").child(user["localId"]).child("details").child("faceDetails").get().val().split()
             Known_Face_Encoding = [float(x) for x in Known_Face_Encoding]
             #print(Known_Face_Encoding)
-            row,col,plane = image_np.shape
-            x, y = 4, 4
-
-            blue_plane = image_np[:,:,0]
-            green_plane = image_np[:,:,1]
-            red_plane = image_np[:,:,2]
-
-            resize_blue_plane = blue_plane[1::x,1::x]
-            resize_green_plane = green_plane[1::x,1::x]
-            resize_red_plane = red_plane[1::x,1::x]
-
-            small_frame = np.zeros((row//x, col//y, plane),np.uint8)
-
-            small_frame[:,:,0] = resize_blue_plane
-            small_frame[:,:,1] = resize_green_plane
-            small_frame[:,:,2] = resize_red_plane
-            
-            rgb_small_frame = small_frame[:, :, :3]
-
-            # Find all the faces and face encodings in the current frame of video
-            face_locations = face_recognition.face_locations(rgb_small_frame)
-
-            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-
-            Status = "False"
-
-            for face_encoding in face_encodings:
-                matches = face_recognition.compare_faces([Known_Face_Encoding], face_encoding)
-                print(matches)
-                face_distances = face_recognition.face_distance([Known_Face_Encoding], face_encoding)
-                print(face_distances)
-                if (matches[0] and  face_distances[0] < 0.50):
-                    Status = "True"
+            Status = utils.faceRecog(Known_Face_Encoding ,image_np)
             if(Status == "True"):
                 database.child("Users").child(user["localId"]).update({"PresentAttendance": "Present"})
             return HttpResponse(json.dumps({'Status': Status}), content_type="application/json")
