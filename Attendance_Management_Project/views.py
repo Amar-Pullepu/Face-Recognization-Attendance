@@ -9,7 +9,6 @@ from PIL import Image
 import base64
 import re
 from io import StringIO, BytesIO
-import cv2
 import face_recognition
 from . import utils
 import datetime
