@@ -12,10 +12,10 @@
   <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Date</th>
-      <th scope="col">Time</th>
-      <th scope="col">Attendance</th>
+      <th scope="col" class="text-center">#</th>
+      <th scope="col" class="text-center">Date</th>
+      <th scope="col" class="text-center">Time</th>
+      <th scope="col" class="text-center">Attendance</th>
     </tr>
   </thead>
   <tbody>
@@ -23,7 +23,7 @@
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
         {% for item in Attendance %}
-         <td>{{item}}</td>
+         <td  scope="col">{{item}}</td>
         {% endfor %}
     </tr>
     {% endfor %}

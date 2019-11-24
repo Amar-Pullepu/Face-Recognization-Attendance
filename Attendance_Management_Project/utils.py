@@ -13,19 +13,19 @@ def faceRecog(Known_Face_Encoding ,image_np):
     resize_blue_plane = blue_plane[1::x,1::x]
     resize_green_plane = green_plane[1::x,1::x]
     resize_red_plane = red_plane[1::x,1::x]
-
-    small_frame = np.zeros((row//x, col//y, plane),np.uint8)
+    
+    newRow, newCol = resize_blue_plane.shape
+    small_frame = np.zeros((newRow, newCol, 3),np.uint8)
 
     small_frame[:,:,0] = resize_blue_plane
     small_frame[:,:,1] = resize_green_plane
     small_frame[:,:,2] = resize_red_plane
     
-    rgb_small_frame = small_frame[:, :, :3]
 
     # Find all the faces and face encodings in the current frame of video
-    face_locations = face_recognition.face_locations(rgb_small_frame)
+    face_locations = face_recognition.face_locations(small_frame)
 
-    face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+    face_encodings = face_recognition.face_encodings(small_frame, face_locations)
 
     name = "False"
 

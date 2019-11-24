@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 import numpy as np
 from PIL import Image
@@ -119,8 +120,12 @@ def showAttendance(request):
     data = []
     for i in range(database.child("Users").child(localId).child("AttendanceLastCount").get().val()):
         Attendance = []
-        Attendance.append(database.child("Users").child(localId).child("").child("").get().val())
-    return render(request, 'showAttendance.html',{})
+        dateTime = database.child("Users").child(localId).child("DateTime").child(i).get().val()
+        Attendance.append(dateTime.split(" ")[0])
+        Attendance.append(dateTime.split(" ")[1])
+        Attendance.append(database.child("Users").child(localId).child("AttendanceMarked").child(i).get().val())
+        data.append(Attendance)
+    return render(request, 'showAttendance.html',{"data": data})
     
 def ajaxCanvas(request):
     try:
@@ -169,6 +174,14 @@ def ajaxAttendanceUpdate(request):
         return redirect('logOut')
     return HttpResponse(json.dumps(data), content_type="application/json")
     
+@csrf_exempt
+def ajaxCheckImage(request):
+    try:
+        print(request.FILES['ImageData'])
+    except:
+        print("Error")
+    return HttpResponse(json.dumps({}), content_type="application/json")    
+    
 def studentRegister(request):
     try:
         idToken = request.session['uid']
@@ -182,13 +195,48 @@ def postRegistration(request):
     database.child("publicData").update({"AttendanceStatus":False})
     try:
         idToken = request.session['uid']
+        user = authe.get_account_info(idToken)["users"][0]
+        email = user["email"]
     except KeyError:
         return redirect('logOut')
     firstName = email = request.POST.get("firstName")
     lastName = email = request.POST.get("lastName")
     email = request.POST.get("email")
     password = request.POST.get("password")
-    faceDetails = request.POST.get("faceDetails")
+    faceImage = request.FILES['myFile']
+    
+    image_PIL = Image.open(faceImage)
+    image_np = np.array(image_PIL)
+    
+    #print(image_np.shape)
+    row,col,plane = image_np.shape
+    x, y = 4, 4
+
+    blue_plane = image_np[:,:,0]
+    green_plane = image_np[:,:,1]
+    red_plane = image_np[:,:,2]
+
+    resize_blue_plane = blue_plane[0::x,0::x]
+    resize_green_plane = green_plane[0::x,0::x]
+    resize_red_plane = red_plane[0::x,0::x]
+    
+    newRow, newCol = resize_blue_plane.shape
+    small_frame = np.zeros((newRow, newCol, 3),np.uint8)
+
+    small_frame[:,:,0] = resize_blue_plane
+    small_frame[:,:,1] = resize_green_plane
+    small_frame[:,:,2] = resize_red_plane
+    
+
+    # Find all the faces and face encodings in the current frame of video
+    face_locations = face_recognition.face_locations(small_frame)
+    face_encodings = face_recognition.face_encodings(small_frame, face_locations)
+    
+    if(len(face_encodings) != 1):
+        return render(request, 'studentRegister.html', {"error" : True})
+    faceDetails = ""
+    for value in face_encodings[0]:
+        faceDetails+=str(value)+" "
     
     user = authe.create_user_with_email_and_password(email, password);
     uid = user['localId']
@@ -205,7 +253,7 @@ def postRegistration(request):
     val+=1;
     
     database.child("publicData").update({"LastCount":val})
-    return render(request, 'postRegistration.html', {})
+    return render(request, 'FacultyHome.html', {'i':email, 'Registered':firstName+" "+lastName})
 
 def markAttendance(request):
     try:

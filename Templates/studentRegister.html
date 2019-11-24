@@ -11,7 +11,7 @@
 <div class="row content">
  <h1>Attendance Management System</h1>
   
-  <form action='postRegistration' method='post' class="form-horizontal">
+  <form action='postRegistration' method='post' class="form-horizontal" enctype="multipart/form-data">
    {% csrf_token %}
    <span><h3>Register Student</h3></span>
     <div class="form-group">
@@ -51,17 +51,40 @@
     </div>
     <div class="form-group">
         <div class="col-sm-2"></div>
-      <label class="col-sm-2 control-label" align="right">Face Details: </label>
-      <div class="col-sm-4">
-        <input class="form-control" id="faceDetails" type="text" name="faceDetails" placeholder="faceDetails" required>
-      </div>
+        <label class="col-sm-2 control-label" align="right">Upload Image: </label>
+        <div class="col-sm-4">
+          <input type="file" id="myFile" name="myFile" accept="image/*">
+        </div>
     </div>
     <button type="submit" class="btn">
-     Next
+     Register
     </button>
       
     <div><h4 id = "logOut"></h4></div>
   </form>  
 </div>
 
+<script>
+ jQuery.noConflict();
+ var el = document.getElementsByName("csrfmiddlewaretoken");
+ var csrf_value = el[0].getAttribute("value");
+ jQuery("#myFile").on("change", function() {
+    var file = this.files[0];
+    var formdata = new FormData(); 
+    formdata.append("image", file);
+    jQuery.ajax({
+        url: "/ajaxCheckImage",
+        type: "POST",
+        cache:false,
+        dataType: "json",
+        data: {
+            ImageData: file,
+            csrfmiddlewaretoken: csrf_value
+        },
+        processData: false,
+        contentType: false,
+        success:function(){}
+    });
+});
+</script>
 {% endblock %}

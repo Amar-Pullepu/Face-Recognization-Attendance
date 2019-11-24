@@ -10,9 +10,6 @@
  <h1>Facial Attendance System</h1>
   <h3>Hello {{i}}</h3>
   <p>Not the whole project </p>
-  {% if Status %}
-   <p>Attendance Marked </p>
-  {% endif %}
     <div class="container">
       <div class="col-sm-2"></div>
       <div class="col-sm-4">
@@ -23,4 +20,10 @@
       </div>
     </div> 
 </div>
+{% if Registered %}
+    <script>alert("Student {{Registered}} Registered Sucessfully")</script>
+{% endif %}
+{% if Status %}
+   <script>alert("Attendance Marked Sucessfully")</script>
+{% endif %}
 {% endblock %}
