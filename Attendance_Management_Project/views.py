@@ -193,10 +193,11 @@ def studentRegister(request):
 
 def postRegistration(request):
     database.child("publicData").update({"AttendanceStatus":False})
+    emai = ""
     try:
         idToken = request.session['uid']
         user = authe.get_account_info(idToken)["users"][0]
-        email = user["email"]
+        emai = user["email"]
     except KeyError:
         return redirect('logOut')
     firstName = email = request.POST.get("firstName")
@@ -253,7 +254,7 @@ def postRegistration(request):
     val+=1;
     
     database.child("publicData").update({"LastCount":val})
-    return render(request, 'FacultyHome.html', {'i':email, 'Registered':firstName+" "+lastName})
+    return render(request, 'FacultyHome.html', {'i':emai, 'Registered':firstName+" "+lastName})
 
 def markAttendance(request):
     try:
