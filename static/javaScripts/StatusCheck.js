@@ -12,6 +12,10 @@ function statusCheck() {
                 document.getElementById("markAttendanceBtn").disabled = true;
                 document.getElementById("statusReport").innerHTML = "Attendance Not Available";
             }
+            else if(resp.Status === "Present"){
+                document.getElementById("markAttendanceBtn").disabled = true;
+                document.getElementById("statusReport").innerHTML = "Attendance Already Marked";
+            }
             else{
                 document.getElementById("markAttendanceBtn").disabled = false;
                 document.getElementById("statusReport").innerHTML = "Attendance Available";

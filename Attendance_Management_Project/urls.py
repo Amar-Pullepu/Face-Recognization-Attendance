@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import views
 
@@ -23,6 +25,7 @@ urlpatterns = [
     path('home', views.home, name="home"),
     path('wrongCredentials', views.wrongCredentials, name="wrongCredentials"),
     path('logOut', views.logOut, name="logOut"),
+    path('ajaxQR', views.ajaxQR, name="ajaxQR"),
     path('ajaxCanvas', views.ajaxCanvas, name="ajaxCanvas"),
     path('ajaxCheckImage', views.ajaxCheckImage, name="ajaxCheckImage"),
     path('ajaxStatusCheck', views.ajaxStatusCheck, name="ajaxStatusCheck"),
@@ -36,6 +39,7 @@ urlpatterns = [
     path('markAttendance', views.markAttendance, name="markAttendance"),
     path('attendanceMarked', views.attendanceMarked, name="attendanceMarked"),
     path('showAttendance', views.showAttendance, name="showAttendance")
-    
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

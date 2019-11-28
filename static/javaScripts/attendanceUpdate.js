@@ -1,4 +1,4 @@
-const FPS = 1
+const FPS = 0.2
 function attendanceUpdate() {
     let begin = Date.now();
     $.ajax({
@@ -13,12 +13,14 @@ function attendanceUpdate() {
                     sel.selectedIndex = 1;
                 }
             }
+            document.getElementById("QRimage").src = "data:image/png;base64,"+resp["contents"];
+            // schedule next one.
+            let delay = 1000/FPS - (Date.now() - begin);
+            setTimeout(attendanceUpdate, delay);
         }
     });
     
-    // schedule next one.
-    let delay = 1000/FPS - (Date.now() - begin);
-    setTimeout(attendanceUpdate, delay);
+    
 }
 // schedule first one.
 setTimeout(attendanceUpdate, 0);

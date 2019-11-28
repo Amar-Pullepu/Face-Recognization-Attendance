@@ -7,7 +7,7 @@
 {% block body %}
 <div class="row content">
  {% csrf_token %}
- <h1>Facial Attendance System</h1>
+ <h1>Face Attendance System</h1>
   <h3>Welcome {{i}}</h3>
   {% if Closed %}
     <p>Attendance Closed </p>
@@ -20,7 +20,7 @@
     <div class="container">
       <div class="col-sm-2"></div>
       <div class="col-sm-4">
-        <button onclick="window.location.href = 'markAttendance';" class="btn btn-primary" id="markAttendanceBtn">FaceRecog Attendance</button>
+        <button onclick="window.location.href = 'markAttendance';" class="btn btn-primary" id="markAttendanceBtn" disabled>FaceRecog Attendance</button>
       </div>
       <div class="col-sm-4">
         <button onclick="window.location.href = 'showAttendance';" class="btn btn-primary">View Attendance</button>

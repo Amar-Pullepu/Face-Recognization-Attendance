@@ -2,6 +2,7 @@ certifi==2019.9.11
 chardet==3.0.4
 Click==7.0
 cmake==3.13.3
+colorama==0.4.1
 dj-database-url==0.5.0
 Django==2.2.6
 django-heroku==0.3.1
@@ -26,6 +27,8 @@ pycryptodome==3.4.3
 Pyrebase==3.0.27
 python-jwt==2.0.1
 pytz==2019.3
+pyzbar==0.1.8
+qrcode==6.1
 requests==2.11.1
 requests-toolbelt==0.7.0
 rsa==4.0
