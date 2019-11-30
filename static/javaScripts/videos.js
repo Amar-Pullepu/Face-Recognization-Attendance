@@ -3,7 +3,7 @@ let videoElm = document.querySelector('#video');
 // flip button element
 let flipBtn = document.querySelector('#flip-btn');
 
-let canvas = document.querySelector('#canvasInput');
+let canvasJQ = document.querySelector('#canvasInput');
 
 // default user media options
 let defaultsOpts = { audio: false, video: true }
@@ -11,12 +11,15 @@ let shouldFaceUser = true;
 
 // check whether we can use facingMode
 let supports = navigator.mediaDevices.getSupportedConstraints();
+
 if( supports['facingMode'] === true ) {
   flipBtn.disabled = false;
-  canvas.width = 600;
-  canavs.height = 745;
+  canvasJQ.width = 600;
+  canvasJQ.height = 745;
 }
-
+else{
+  console.log("Faceing mode" + supports['facingMode']);
+}
 let stream = null;
 
 function capture() {
