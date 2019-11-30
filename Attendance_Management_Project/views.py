@@ -65,7 +65,7 @@ def attendanceClosed(request):
     name = ""
     try:
         idToken = request.session['uid']
-        a = authe.get_account_info(idToken)["users"][0]
+        user = authe.get_account_info(idToken)["users"][0]
         localId = user["localId"]
         name = database.child("Users").child(localId).child("details").child("firstName").get().val()
     except KeyError:
@@ -109,9 +109,7 @@ def logOut(request):
     email = ""
     try:
         idToken = request.session['uid']
-        a = authe.get_account_info(idToken)
-        a = a["users"]
-        user = a[0]
+        user = authe.get_account_info(idToken)["users"][0]
         email = user["email"]
         del request.session['uid']
     except KeyError:
@@ -172,9 +170,7 @@ def ajaxCanvas(request):
             image_np = np.array(image_PIL) 
             #Shape Difference
             idToken = request.session['uid']
-            a = authe.get_account_info(idToken)
-            a = a["users"]
-            user = a[0]
+            user = authe.get_account_info(idToken)["users"][0]
             Known_Face_Encoding = database.child("Users").child(user["localId"]).child("details").child("faceDetails").get().val().split()
             Known_Face_Encoding = [float(x) for x in Known_Face_Encoding]
             #print(Known_Face_Encoding)
@@ -196,8 +192,6 @@ def ajaxStatusCheck(request):
     localId = user["localId"]
     presentAttendance = database.child("Users").child(localId).child("PresentAttendance").get().val()
     attendanceStatus = database.child("publicData").child("AttendanceStatus").get().val()
-    print(presentAttendance)
-    print(attendanceStatus)
     if(presentAttendance == "Present" and attendanceStatus):
         return HttpResponse(json.dumps({'Status': "Present"}), content_type="application/json")
     elif(attendanceStatus):
