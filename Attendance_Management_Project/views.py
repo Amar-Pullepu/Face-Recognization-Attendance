@@ -316,8 +316,11 @@ def postRegistration(request):
     return render(request, 'FacultyHome.html', {'i':"Faculty", 'Registered':firstName+" "+lastName})
 
 def markAttendance(request):
+    name = ""
     try:
         idToken = request.session['uid']
+        user = authe.get_account_info(idToken)["users"][0]
+        name = database.child("Users").child(user["localId"]).child("details").child("firstName").get().val()
     except KeyError:
         return redirect('logOut')
     return render(request, 'markAttendance.html', {})

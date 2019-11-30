@@ -16,16 +16,17 @@
   {% endif %}
     
     <p id="statusReport"></p>
-  <p>Not the whole project </p>
+  <p>Not the whole project </p><br>
     <div class="container">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-4">
+      <div>
         <button onclick="window.location.href = 'markAttendance';" class="btn btn-primary" id="markAttendanceBtn" disabled>FaceRecog Attendance</button>
-      </div>
-      <div class="col-sm-4">
+        </div>
+        </div><br>
+     <div class="container">
+      <div>
         <button onclick="window.location.href = 'showAttendance';" class="btn btn-primary">View Attendance</button>
       </div>
-    </div> 
+     </div>
 </div>
 {% load static %}
 <script type="text/javascript" src="{% static 'javaScripts/StatusCheck.js' %}"></script>
