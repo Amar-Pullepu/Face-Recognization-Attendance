@@ -12,17 +12,7 @@ let shouldFaceUser = true;
 // check whether we can use facingMode
 let supports = navigator.mediaDevices.getSupportedConstraints();
 
-if( supports['facingMode'] === true ) {
-  flipBtn.disabled = false;
-  
-  canvasJQ.width = 600;
-  canvasJQ.height = 900;
-  $(".booth").width(495);
-  $(".booth").height(745);
-}
-else{
-  console.log("Faceing mode" + supports['facingMode']);
-}
+
 let stream = null;
 
 function capture() {
@@ -30,6 +20,13 @@ function capture() {
   navigator.mediaDevices.getUserMedia(defaultsOpts)
     .then(function(_stream) {
       stream  = _stream;
+      canvasJQ.height = stream.getVideoTracks()[0].getSettings().height;
+      canvasJQ.width = stream.getVideoTracks()[0].getSettings().width;
+      $(".booth").width(canvasJQ.width);
+      $(".booth").height(canvasJQ.height);
+      if(canvasJQ.height > canvasJQ.width){
+          flipBtn.disabled = false;
+      }
       videoElm.srcObject = stream;
       videoElm.play();
     })
