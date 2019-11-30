@@ -20,6 +20,7 @@ function capture() {
   navigator.mediaDevices.getUserMedia(defaultsOpts)
     .then(function(_stream) {
       stream  = _stream;
+      document.querySelector('#console').innerHTML = stream.getVideoTracks()[0].getSettings().height +" "+ stream.getVideoTracks()[0].getSettings().width;
       canvasJQ.height = stream.getVideoTracks()[0].getSettings().height;
       canvasJQ.width = stream.getVideoTracks()[0].getSettings().width;
       $(".booth").width(canvasJQ.width);
