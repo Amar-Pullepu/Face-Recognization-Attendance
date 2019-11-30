@@ -8,7 +8,7 @@
 <div class="row content">
  <h1>Attendance Management System</h1>
   
-  <form action='attendanceMarked' method='post' class="form-horizontal">
+  <form action='attendanceMarked' onsubmit='return beforeSubmit()' method='post' class="form-horizontal">
    {% csrf_token %}
    <span><h3>List of Students</h3></span>
   <table class="table">
@@ -38,16 +38,20 @@
     {% endfor %}
   </tbody>
   </table>
-      <div class="col-sm-3"></div>
+      <div class="col-sm-2"></div>
       <div class="col-sm-2">
-  <button type="submit" class="btn">
+        <input class="form-control" id="Count" type="number" name="Count" placeholder="HeadCount" required>
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-2">
+  <button type="submit" class="btn btn-primary">
      Submit
   </button>
           </div>
-      <div class="col-sm-2"></div>
+      <div class="col-sm-1"></div>
     <!-- Button trigger modal -->
       <div class="col-sm-2">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
       Show QR Code
     </button></div>
   </form>

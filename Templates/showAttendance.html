@@ -7,15 +7,18 @@
 {% block body %}
 <div class="row content">
  <h1>Attendance Management System</h1>
-  
+  <style>
+        .tableFixHead thead th { position: sticky; top: 0; }
+  </style>
    <span><h3>List of Attendance</h3></span>
-  <table class="table">
-  <thead class="thead-dark">
+  <div classs="table-responsive" style="overflow:auto; max-height:400px;">
+  <table class="table" style="border-collapse: collapse; width: 100%;">
+  <thead style="position: sticky; top: 0;">
     <tr>
-      <th scope="col" class="text-center">#</th>
-      <th scope="col" class="text-center">Date</th>
-      <th scope="col" class="text-center">Time</th>
-      <th scope="col" class="text-center">Attendance</th>
+      <th scope="col" class="text-center" style="background-color: black; color: white; position: sticky; top: 0;">#</th>
+      <th scope="col" class="text-center" style="background-color: black; color: white; position: sticky; top: 0;">Date</th>
+      <th scope="col" class="text-center" style="background-color: black; color: white; position: sticky; top: 0;">Time</th>
+      <th scope="col" class="text-center" style="background-color: black; color: white; position: sticky; top: 0;">Attendance</th>
     </tr>
   </thead>
   <tbody>
@@ -28,10 +31,18 @@
     </tr>
     {% endfor %}
   </tbody>
+  <tfoot>
+    <tr style="position: sticky; bottom: 0;">
+      <td scope="col" style="background-color: #524e4e; color: white; position: sticky; bottom: 0;"> </td>
+      <td scope="col" style="background-color: #524e4e; color: white; position: sticky; bottom: 0;"> </td>
+      <td scope="col" style="background-color: #524e4e; color: white; position: sticky; bottom: 0;"> </td>
+      <th scope="col" style="background-color: #524e4e; color: white; position: sticky; bottom: 0;">Percentage: {{percentage}}</th>
+    </tr>
+  </tfoot>
   </table>
-    
-    
+  </div>
 </div>
+
 
 {% endblock %}
 {% block footer %}<strong>©Amar Pullepu</strong>{% endblock %}

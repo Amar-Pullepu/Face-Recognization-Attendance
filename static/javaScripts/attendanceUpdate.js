@@ -1,4 +1,6 @@
-const FPS = 0.2
+const FPS = 0.2;
+var Length = 0;
+
 function attendanceUpdate() {
     let begin = Date.now();
     $.ajax({
@@ -7,9 +9,10 @@ function attendanceUpdate() {
         cache:false,
         dataType: "json",
         success: function(resp){
+            Length = resp.length-1;
             for(var itr = 0; itr<resp.length; itr++){
-                var sel = document.getElementById('sel'+itr.toString());
                 if(resp[itr] === "Present"){
+                    var sel = document.getElementById('sel'+itr.toString());
                     sel.selectedIndex = 1;
                 }
             }
@@ -24,3 +27,18 @@ function attendanceUpdate() {
 }
 // schedule first one.
 setTimeout(attendanceUpdate, 0);
+
+function beforeSubmit(){
+    var headCount = 0;
+    
+    for(var itr = 0; itr<Length; itr++){
+        if(document.getElementById('sel'+itr.toString()).selectedIndex === 1){
+            headCount += 1;
+        }
+    }
+    var givenCount = document.getElementById("Count").value;
+    if(parseInt(givenCount, 10) !== headCount){
+        alert("Count Mismatch!! \n Check head count again");
+        return false;
+    }
+} 
