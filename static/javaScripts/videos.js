@@ -9,6 +9,8 @@ let canvasJQ = document.querySelector('#canvasInput');
 let defaultsOpts = { audio: false, video: true }
 let shouldFaceUser = true;
 
+var heightJQ = 0;
+var widthJQ = 0;
 // check whether we can use facingMode
 let supports = navigator.mediaDevices.getSupportedConstraints();
 
@@ -21,19 +23,25 @@ function capture() {
     .then(function(_stream) {
       stream  = _stream;
       document.querySelector('#console').innerHTML = stream.getVideoTracks()[0].getSettings().height +" "+ stream.getVideoTracks()[0].getSettings().width;
-      canvasJQ.height = stream.getVideoTracks()[0].getSettings().height;
-      canvasJQ.width = stream.getVideoTracks()[0].getSettings().width;
-      $(".booth").width(canvasJQ.width);
-      $(".booth").height(canvasJQ.height);
-      if(canvasJQ.height > canvasJQ.width){
-          flipBtn.disabled = false;
-      }
+      heightJQ = stream.getVideoTracks()[0].getSettings().height;
+      widthJQ = stream.getVideoTracks()[0].getSettings().width;
       videoElm.srcObject = stream;
       videoElm.play();
     })
     .catch(function(err) {
       console.log(err)
     });
+}
+
+function adjustCanvas(){
+    console.log("Adjusted");
+    canvasJQ.width = widthJQ
+    canvasJQ.height = heightJQ
+    $(".booth").width(widthJQ);
+    $(".booth").height(heightJQ);
+    if(canvasJQ.height > canvasJQ.width){
+      flipBtn.disabled = false;
+}
 }
 
 function flipCam(){
@@ -49,3 +57,4 @@ function flipCam(){
 }
 
 capture();
+setTimeout(adjustCanvas, 3000);
