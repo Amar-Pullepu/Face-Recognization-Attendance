@@ -32,10 +32,10 @@ function capture() {
 function adjustCanvas(){
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if(isMobile){
-        canvasJQ.width = 600;
-        canvasJQ.height = 900;
-        $(".booth").width(600);
-        $(".booth").height(900);
+        canvasJQ.width = 420;
+        canvasJQ.height = 615;
+        $(".booth").width(420);
+        $(".booth").height(615);
         flipBtn.disabled = false;
     }
     else{
