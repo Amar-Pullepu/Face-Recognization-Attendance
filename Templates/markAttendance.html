@@ -10,15 +10,15 @@
  <h1>Face Attendance System</h1>
   <h3>Hello {{i}}</h3>
   <h4 id="ModeOption">Scan For QR Image </h4>
-        <video id="video"hidden></video>
+  <button id="flip-btn" type="button" class="btn" onclick="flipCam()" disabled>Flip Camera</button>
+  <video id="video"hidden></video>
   <div class = "booth">
     <canvas id="canvasInput" width="800" height="600"></canvas>
   </div>
-  <button id="flip-btn" class="btn" disabled>Flip Camera</button>
   {% load static %}
-  <link rel="stylesheet" href="{% static 'CSS/booths.css' %}">
-  <script type="text/javascript" src="{% static 'javaScripts/videos.js' %}"></script>
-  <script type="text/javascript" src="{% static 'javaScripts/canvasDisplay.js' %}"></script>
-  <script type="text/javascript" src="{% static 'javaScripts/videoProcessing.js' %}"></script>
 </div>
+<link rel="stylesheet" href="{% static 'CSS/booths.css' %}">
+<script type="text/javascript" src="{% static 'javaScripts/videos.js' %}"></script>
+<script type="text/javascript" src="{% static 'javaScripts/canvasDisplay.js' %}"></script>
+<script type="text/javascript" src="{% static 'javaScripts/videoProcessing.js' %}"></script>
 {% endblock %}

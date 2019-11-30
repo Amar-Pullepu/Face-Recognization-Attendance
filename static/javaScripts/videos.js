@@ -38,7 +38,8 @@ function capture() {
     });
 }
 
-flipBtn.addEventListener('click', function(){
+function flipCam(){
+  console.log("Fliped");
   if( stream == null ) return
   // we need to flip, stop everything
   stream.getTracks().forEach(t => {
@@ -47,6 +48,6 @@ flipBtn.addEventListener('click', function(){
   // toggle / flip
   shouldFaceUser = !shouldFaceUser;
   capture();
-})
+}
 
 capture();
