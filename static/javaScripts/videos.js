@@ -9,8 +9,6 @@ let canvasJQ = document.querySelector('#canvasInput');
 let defaultsOpts = { audio: false, video: true }
 let shouldFaceUser = true;
 
-var heightJQ = 0;
-var widthJQ = 0;
 // check whether we can use facingMode
 let supports = navigator.mediaDevices.getSupportedConstraints();
 
@@ -23,8 +21,6 @@ function capture() {
     .then(function(_stream) {
       stream  = _stream;
       document.querySelector('#console').innerHTML = stream.getVideoTracks()[0].getSettings().height +" "+ stream.getVideoTracks()[0].getSettings().width;
-      heightJQ = stream.getVideoTracks()[0].getSettings().height;
-      widthJQ = stream.getVideoTracks()[0].getSettings().width;
       videoElm.srcObject = stream;
       videoElm.play();
     })
@@ -34,14 +30,21 @@ function capture() {
 }
 
 function adjustCanvas(){
-    console.log("Adjusted");
-    canvasJQ.width = widthJQ
-    canvasJQ.height = heightJQ
-    $(".booth").width(widthJQ);
-    $(".booth").height(heightJQ);
-    if(canvasJQ.height > canvasJQ.width){
-      flipBtn.disabled = false;
-}
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile){
+        canvasJQ.width = 600;
+        canvasJQ.height = 900;
+        $(".booth").width(600);
+        $(".booth").height(900);
+        flipBtn.disabled = false;
+    }
+    else{
+        canvasJQ.width = 640;
+        canvasJQ.height = 480;
+        $(".booth").width(640);
+        $(".booth").height(480);
+          flipBtn.disabled = true;
+    }
 }
 
 function flipCam(){
@@ -57,4 +60,4 @@ function flipCam(){
 }
 
 capture();
-setTimeout(adjustCanvas, 3000);
+adjustCanvas();
