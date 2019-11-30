@@ -15,7 +15,7 @@ let supports = navigator.mediaDevices.getSupportedConstraints();
 if( supports['facingMode'] === true ) {
   flipBtn.disabled = false;
   canvasJQ.width = 600;
-  canvasJQ.height = 745;
+  canvasJQ.height = 1200;
 }
 else{
   console.log("Faceing mode" + supports['facingMode']);
