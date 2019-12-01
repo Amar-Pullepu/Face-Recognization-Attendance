@@ -113,8 +113,8 @@ def logOut(request):
         user = authe.get_account_info(idToken)["users"][0]
         email = user["email"]
         del request.session['uid']
-    except KeyError:
-        pass
+    except:
+        return render(request, 'login.html',{'error':'2'})
     if(len(email.split("@")[0]) == 6):
         database.child("publicData").update({"AttendanceStatus":False})
     return render(request, 'login.html',{'error':'2'})
@@ -350,7 +350,7 @@ def getAttendance(request):
     except KeyError:
         return redirect('logOut')
     
-    localId = database.child("publicData").child("studentLocalId").child(int(request.GET.get('userID','0'))).get().val()
+    localId = database.child("publicData").child("studentLocalId").child(request.POST.get('userId')).get().val()
     data = []
     regId = database.child("Users").child(localId).child("details").child("regNumber").get().val()
     name = database.child("Users").child(localId).child("details").child("firstName").get().val() + " " + database.child("Users").child(localId).child("details").child("lastName").get().val()

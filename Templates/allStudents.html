@@ -8,6 +8,10 @@
 <div class="row content">
  <h1>Attendance Management System</h1>
  <span><h3>List of Students</h3></span>
+    <form action='getAttendance' id="myForm" method='post' class="form-horizontal">
+   {% csrf_token %}
+        <input name="userId" id="userId" type=number hidden>
+    </form>
   <table class="table">
   <thead class="thead-dark">
     <tr>
