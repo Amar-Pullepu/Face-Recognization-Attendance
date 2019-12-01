@@ -9,7 +9,7 @@ function attendanceUpdate() {
         cache:false,
         dataType: "json",
         success: function(resp){
-            Length = resp.length-1;
+            Length = resp.length;
             for(var itr = 0; itr<resp.length; itr++){
                 if(resp[itr] === "Present"){
                     var sel = document.getElementById('sel'+itr.toString());
@@ -41,4 +41,5 @@ function beforeSubmit(){
         alert("Count Mismatch!! \n Check head count again");
         return false;
     }
+    document.getElementById('submit').disabled = true;
 } 

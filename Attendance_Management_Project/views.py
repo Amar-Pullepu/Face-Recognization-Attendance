@@ -21,6 +21,7 @@ import qrcode
 import random
 import os
 from pyzbar.pyzbar import decode
+import pytz
 
 firebaseConfig = {
     'apiKey': "AIzaSyCt_ES04VDH6IyBOx810tj0eG6a17-uzTA",
@@ -128,7 +129,9 @@ def showAttendance(request):
         return redirect('logOut')
     data = []
     allClasses,attendedClasses = database.child("Users").child(localId).child("AttendanceLastCount").get().val(), 0;
-    
+    regId = database.child("Users").child(localId).child("details").child("regNumber").get().val()
+    name = database.child("Users").child(localId).child("details").child("firstName").get().val() + " " + database.child("Users").child(localId).child("details").child("lastName").get().val()
+
     for i in range(database.child("Users").child(localId).child("AttendanceLastCount").get().val()):
         Attendance = []
         dateTime = database.child("Users").child(localId).child("DateTime").child(i).get().val()
@@ -138,7 +141,7 @@ def showAttendance(request):
         if(database.child("Users").child(localId).child("AttendanceMarked").child(i).get().val() == "Present"):
             attendedClasses+=1
         data.append(Attendance)
-    return render(request, 'showAttendance.html',{"data": data, "percentage": format((attendedClasses/allClasses)*100, '.2f')})
+    return render(request, 'showAttendance.html',{"data": data, "percentage": format((attendedClasses/allClasses)*100, '.2f'), "Name": name,"RegId": regId})
 
 def ajaxQR(request):
     try:
@@ -241,6 +244,16 @@ def ajaxCheckImage(request):
         print("Error")
     return HttpResponse(json.dumps({}), content_type="application/json")    
     
+def ajaxCheckEmail(request):
+    PregId = request.GET.get('Email', None)
+    PregId = PregId.split("@")[0]
+    for i in range(database.child("publicData").child("LastCount").get().val()):
+        localId = database.child("publicData").child("studentLocalId").child(i).get().val()
+        regId = database.child("Users").child(localId).child("details").child("regNumber").get().val()
+        if(PregId == regId):
+            return HttpResponse(json.dumps({"Exist": "True"}), content_type="application/json")
+    return HttpResponse(json.dumps({"Exist": "False"}), content_type="application/json")
+    
 def studentRegister(request):
     try:
         idToken = request.session['uid']
@@ -315,6 +328,46 @@ def postRegistration(request):
     database.child("publicData").update({"LastCount":val})
     return render(request, 'FacultyHome.html', {'i':"Faculty", 'Registered':firstName+" "+lastName})
 
+def allStudents(request):
+    try:
+        idToken = request.session['uid']
+    except KeyError:
+        return redirect('logOut')
+    data = []
+    for i in range(database.child("publicData").child("LastCount").get().val()):
+        student = []
+        localId = database.child("publicData").child("studentLocalId").child(i).get().val()
+        regId = database.child("Users").child(localId).child("details").child("regNumber").get().val()
+        name = database.child("Users").child(localId).child("details").child("firstName").get().val() + " " + database.child("Users").child(localId).child("details").child("lastName").get().val()
+        student.append(regId)
+        student.append(name)
+        data.append(student)
+    return render(request, 'allStudents.html', {"data": data})
+
+def getAttendance(request):
+    try:
+        idToken = request.session['uid']
+    except KeyError:
+        return redirect('logOut')
+    
+    localId = database.child("publicData").child("studentLocalId").child(int(request.GET.get('userID','0'))).get().val()
+    data = []
+    regId = database.child("Users").child(localId).child("details").child("regNumber").get().val()
+    name = database.child("Users").child(localId).child("details").child("firstName").get().val() + " " + database.child("Users").child(localId).child("details").child("lastName").get().val()
+    
+    allClasses,attendedClasses = database.child("Users").child(localId).child("AttendanceLastCount").get().val(), 0;
+    
+    for i in range(database.child("Users").child(localId).child("AttendanceLastCount").get().val()):
+        Attendance = []
+        dateTime = database.child("Users").child(localId).child("DateTime").child(i).get().val()
+        Attendance.append(dateTime.split(" ")[0])
+        Attendance.append(dateTime.split(" ")[1])
+        Attendance.append(database.child("Users").child(localId).child("AttendanceMarked").child(i).get().val())
+        if(database.child("Users").child(localId).child("AttendanceMarked").child(i).get().val() == "Present"):
+            attendedClasses+=1
+        data.append(Attendance)
+    return render(request, 'showAttendance.html',{"data": data, "percentage": format((attendedClasses/allClasses)*100, '.2f'), "Name": name,"RegId": regId})
+
 def markAttendance(request):
     name = ""
     try:
@@ -350,14 +403,18 @@ def attendanceMarked(request):
         email = user["email"]
     except KeyError:
         return redirect('logOut')
-    datetime_object = datetime.datetime.now()
-    Date = datetime.date.today()
-    Hour = datetime_object.hour
+    utcmoment_naive = datetime.datetime.utcnow()
+    utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
+    localDatetime = utcmoment.astimezone(pytz.timezone('Asia/Calcutta'))
+    print()
+    print()
+    Date = localDatetime.strftime("%m/%d/%Y")
+    Hour = int(localDatetime.strftime("%H"))
     for i in range(database.child("publicData").child("LastCount").get().val()):
         localId = database.child("publicData").child("studentLocalId").child(i).get().val()
         val = database.child("Users").child(localId).child("AttendanceLastCount").get().val()
         database.child("Users").child(localId).child("AttendanceMarked").child(val).set(request.POST.get("sel"+str(i)))
-        database.child("Users").child(localId).child("DateTime").child(val).set(Date.strftime('%m/%d/%Y')+" "+(format(Hour if(Hour <= 12) else Hour%12, '02'))+("AM-" if(Hour%24 < 12) else "PM-")+(format((Hour+1)%24 if((Hour+1)%24 <= 12) else (Hour+1)%12, '02')) + ("AM" if((Hour+1)%24 < 12) else "PM"))
+        database.child("Users").child(localId).child("DateTime").child(val).set(Date+" "+(format(Hour if(Hour <= 12) else Hour%12, '02'))+("AM-" if(Hour%24 < 12) else "PM-")+(format((Hour+1)%24 if((Hour+1)%24 <= 12) else (Hour+1)%12, '02')) + ("AM" if((Hour+1)%24 < 12) else "PM"))
         database.child("Users").child(localId).update({"AttendanceLastCount": val+1})
         database.child("Users").child(localId).update({"PresentAttendance": "Absent"})
     database.child("publicData").update({"AttendanceStatus":False})

@@ -7,11 +7,13 @@
 {% endblock %}
 
 {% block body %}
-
+{% if error %}
+    <script>alert("No Face Detected in uploaded File")</script>
+{% endif %}
 <div class="row content">
  <h1>Attendance Management System</h1>
   
-  <form action='postRegistration' method='post' class="form-horizontal" enctype="multipart/form-data">
+  <form action='postRegistration' method='post' onsubmit='return beforeSubmit()' class="form-horizontal" enctype="multipart/form-data">
    {% csrf_token %}
    <span><h3>Register Student</h3></span>
     <div class="form-group">
@@ -56,35 +58,13 @@
           <input type="file" id="myFile" name="myFile" accept="image/*" capture="camera" required>
         </div>
     </div>
-    <button type="submit" class="btn">
+    <button id="submit" type="submit" class="btn">
      Register
     </button>
       
     <div><h4 id = "logOut"></h4></div>
   </form>  
 </div>
-
-<script>
- jQuery.noConflict();
- var el = document.getElementsByName("csrfmiddlewaretoken");
- var csrf_value = el[0].getAttribute("value");
- jQuery("#myFile").on("change", function() {
-    var file = this.files[0];
-    var formdata = new FormData(); 
-    formdata.append("image", file);
-    jQuery.ajax({
-        url: "/ajaxCheckImage",
-        type: "POST",
-        cache:false,
-        dataType: "json",
-        data: {
-            ImageData: file,
-            csrfmiddlewaretoken: csrf_value
-        },
-        processData: false,
-        contentType: false,
-        success:function(){}
-    });
-});
-</script>
+{% load static %}
+<script type="text/javascript" src="{% static 'javaScripts/preValidation.js' %}"></script>
 {% endblock %}
