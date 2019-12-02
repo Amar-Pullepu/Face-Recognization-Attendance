@@ -22,6 +22,7 @@ function processVideo() {
                 window.location = "attendanceClosed";
             }
             else if(resp.Status === "True"){
+                alert("FACE Matched!!");
                 window.location = "attendanceRecorded";
             }
             else{
@@ -52,6 +53,7 @@ function processVideoQR() {
             }
             else if(resp.Status === "True"){
                 document.getElementById("ModeOption").innerHTML = "Scan For Face Image";
+                alert("QR Matched!!");
                 processVideo();
             }
             else{
