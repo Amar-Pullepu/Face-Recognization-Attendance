@@ -376,7 +376,7 @@ def markAttendance(request):
         name = database.child("Users").child(user["localId"]).child("details").child("firstName").get().val()
     except KeyError:
         return redirect('logOut')
-    return render(request, 'markAttendance.html', {})
+    return render(request, 'markAttendance.html', {"i":name})
 
 def facultyAttendance(request):
     data = []
