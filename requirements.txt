@@ -4,7 +4,7 @@ Click==7.0
 cmake==3.13.3
 colorama==0.4.1
 dj-database-url==0.5.0
-Django==2.2.6
+Django==2.2.28
 django-heroku==0.3.1
 dlib==19.18.0
 face-recognition==1.2.3
